@@ -69,27 +69,27 @@ func Generate(board [64]int16, color int16) []Move {
 
       if move == EMPTY {
         to = idx(row + 1 * dir, col)
-        moves = append(moves, Move{piece:PAWN | color, from: from, to: to})
+        moves = append(moves, Move{piece: piece, from: from, to: to})
       }
       // move two up, if in starting position, next two fields are clear
       if move == EMPTY && (color == COLOR_WHITE && row == 6 || color == COLOR_BLACK && row == 1) {
         move = field(board, row + 2 * dir, col)
         if move == EMPTY {
           to = idx(row + 2 * dir, col)
-          moves = append(moves, Move{piece:PAWN | color, from: from, to: to})
+          moves = append(moves, Move{piece: piece, from: from, to: to})
         }
       }
       // attack left/up if enemy piece is there
       move = field(board, row + 1 * dir, col - 1 * dir)
       if move & enemy == enemy {
         to = idx(row + 1 * dir, col - 1)
-        moves = append(moves, Move{piece:PAWN | color, from: from, to: to})
+        moves = append(moves, Move{piece: piece, from: from, to: to})
       }
       // attack right/up if enemy piece is there
       move = field(board, row + 1 * dir, col + 1 * dir)
       if move & enemy == enemy {
         to = idx(row + 1 * dir, col + 1)
-        moves = append(moves, Move{piece:PAWN | color, from: from, to: to})
+        moves = append(moves, Move{piece: piece, from: from, to: to})
       }
     }
 
