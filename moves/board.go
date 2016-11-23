@@ -17,7 +17,7 @@ func Add(board [64]int16, move Move) [64]int16 {
 }
 
 func Remove(board [64]int16, move Move) [64]int16 {
-  board[move.to] = EMPTY
+  board[move.to] = move.prev
   board[move.from] = move.piece
   return board
 }
@@ -35,6 +35,10 @@ func Perft(depth int) int {
   var nodes int = 0
 
   var moves = Generate(board, COLOR_WHITE)
+
+  if depth == 0 {
+    return 1
+  }
 
   if depth == 1 {
     return len(moves)
