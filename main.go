@@ -1,20 +1,23 @@
 package main
 
 import (
-  "github.com/eliias/peterpawner/debug"
-  "github.com/eliias/peterpawner/moves"
   "fmt"
+  "github.com/eliias/peterpawner/chess"
 )
 
 func main() {
   fmt.Println("\n-----------------\npeterpawner 1.0\nHannes Moser 2016\n-----------------\n")
 
-  var board = moves.Start
-  var color = moves.COLOR_WHITE
-  fmt.Println(debug.Board(board))
+  var board []uint8
+
+  board = chess.Start
+  fmt.Println(chess.DebugBoard(board))
 
   var depth = 3
-  fmt.Println("Perft (", depth, "):", moves.Perft(board, depth, color))
+  fmt.Println(chess.DebugPerft(depth))
 
-  //fmt.Println(debug.Moves(board, depth, color))
+  var game = chess.Load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  fmt.Println(chess.Save(game))
+  //fmt.Println(chess.DebugGame(game))
+  //fmt.Println(debug.Moves(board, depth, chess.COLOR_WHITE))
 }
