@@ -1,24 +1,20 @@
 package main
 
-import "fmt"
-import "./moves"
-import "./debug"
+import (
+  "github.com/eliias/peterpawner/debug"
+  "github.com/eliias/peterpawner/moves"
+  "fmt"
+)
 
 func main() {
   fmt.Println("\n-----------------\npeterpawner 1.0\nHannes Moser 2016\n-----------------\n")
 
   var board = moves.Start
+  var color = moves.COLOR_WHITE
   fmt.Println(debug.Board(board))
 
-  var depth = 7
-  fmt.Println("Perft (", depth, "):", moves.Perft(depth))
+  var depth = 3
+  fmt.Println("Perft (", depth, "):", moves.Perft(board, depth, color))
 
-  /*
-  var list = moves.Generate(board, moves.COLOR_WHITE)
-  var n [64]int16
-  for _, move := range list {
-    n = moves.Add(board, move)
-    fmt.Println(debug.Board(n))
-  }
-  */
+  //fmt.Println(debug.Moves(board, depth, color))
 }
