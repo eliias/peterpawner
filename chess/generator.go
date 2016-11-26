@@ -1,4 +1,4 @@
-package moves
+package chess
 
 const INVALID_MOVE uint8 = 255
 

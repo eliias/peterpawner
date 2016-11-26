@@ -1,4 +1,4 @@
-package moves
+package chess
 
 import "strings"
 

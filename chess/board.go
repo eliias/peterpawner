@@ -1,4 +1,4 @@
-package moves
+package chess
 
 import (
   "strings"
@@ -113,11 +113,82 @@ func Load(fen string) Game {
     Halfmove: halfmove,
     Fullmove: fullmove}
 }
-/*
-func Save(board [64]uint8) string {
-  return ""
+
+func Save(game Game) string {
+  var str = ""
+  var cnt = 0
+
+  // board
+  for i := 0; i < 64; i += 1 {
+    // piece
+    var piece = game.Board[uint8(i)]
+
+    // empty
+    if piece == EMPTY {
+      // found an empty field
+      cnt += 1
+    }
+
+    // regular piece
+    if piece != EMPTY {
+      if cnt > 0 {
+        str += strconv.FormatInt(int64(cnt), 10)
+      }
+      str += PieceName(piece)
+      cnt = 0
+    }
+
+    // new rank
+    if (i + 1) % 8 == 0 {
+      if cnt > 0 {
+        str += strconv.FormatInt(int64(cnt), 10)
+      }
+      if i < 63 {
+        str += "/"
+      }
+      cnt = 0
+    }
+  }
+
+  // active color
+  str += " " + ColorName(game.Color)
+
+  // castling
+  var castling = ""
+  if game.WhiteCastleKingSide {
+    castling += "K"
+  }
+  if game.WhiteCastleQueenSide {
+    castling += "Q"
+  }
+  if game.BlackCastleKingSide {
+    castling += "k"
+  }
+  if game.BlackCastleQueenSide {
+    castling += "q"
+  }
+  if len(castling) == 0 {
+    castling = "-"
+  }
+  str += " " + castling
+
+  // en passant
+  var enPassant = ""
+  if game.EnPassant != INVALID_MOVE {
+    enPassant = DebugPos(game.EnPassant)
+  } else {
+    enPassant = "-"
+  }
+  str += " " + enPassant
+
+  // halfmove
+  str += " " + strconv.FormatInt(int64(game.Halfmove), 10)
+
+  // fullmove
+  str += " " + strconv.FormatInt(int64(game.Fullmove), 10)
+
+  return str
 }
-*/
 
 type PerftResult struct {
   Nodes      int
