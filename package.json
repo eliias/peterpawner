@@ -1,0 +1,27 @@
+{
+  "name": "peterpawner",
+  "version": "1.0.0",
+  "description": "A basic and very raw chess engine, written in GO.",
+  "main": "main.go",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "go build -o .tmp/peterpawner main.go",
+    "start": "npm run build && .tmp/peterpawner",
+    "test": "go test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eliias/peterpawner"
+  },
+  "keywords": [
+    "Chess"
+  ],
+  "author": "Hannes Moser <hannes@impossiblearts.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eliias/peterpawner/issues"
+  },
+  "homepage": "https://github.com/eliias/peterpawner#readme"
+}
