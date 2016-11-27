@@ -439,16 +439,71 @@ func king(board []uint8, piece uint8, enemy uint8, row uint8, col uint8) []Move 
 	var move uint8
 	var from uint8 = idx(row, col)
 	var to uint8
-	for r := -1; r <= 1; r += 2 {
-		for c := -1; c <= 1; c += 2 {
-			move = field(board, row+uint8(r), col+uint8(c))
-			to = idx(row+uint8(r), col+uint8(c))
-			capture = move&enemy == enemy
-			if to != INVALID_MOVE && (move == EMPTY || capture) {
-				moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
-			}
-		}
+
+	// top, -1,0
+	move = field(board, row - 1, col)
+	to = idx(row - 1, col)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
+
+	// top/right, -1,+1
+	move = field(board, row - 1, col + 1)
+	to = idx(row - 1, col + 1)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+	}
+
+	// right, 0,+1
+	move = field(board, row, col + 1)
+	to = idx(row, col + 1)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+	}
+
+	// bottom/right, +1,+1
+	move = field(board, row + 1, col + 1)
+	to = idx(row + 1, col + 1)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+	}
+
+	// bottom, +1,0
+	move = field(board, row + 1, col)
+	to = idx(row + 1, col)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+	}
+
+	// bottom/left, +1,-1
+	move = field(board, row + 1, col - 1)
+	to = idx(row + 1, col - 1)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+	}
+
+	// left, 0,-1
+	move = field(board, row, col - 1)
+	to = idx(row, col - 1)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+	}
+
+	// top/left, -1,-1
+	move = field(board, row - 1, col - 1)
+	to = idx(row - 1, col - 1)
+	capture = move&enemy == enemy
+	if to != INVALID_MOVE && (move == EMPTY || capture) {
+		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+	}
+
 	return moves
 }
 
