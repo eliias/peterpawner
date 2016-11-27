@@ -200,6 +200,11 @@ type PerftResult struct {
 	Checkmates int
 }
 
+type PerftDivideResult struct {
+	Move Move
+	Nodes int
+}
+
 func stats(moves []Move) PerftResult {
 	var result = PerftResult{Nodes: len(moves)}
 	for _, move := range moves {
@@ -249,4 +254,43 @@ func perft(board []uint8, depth int, color uint8) PerftResult {
 
 func Perft(depth int) PerftResult {
 	return perft(Start, depth, COLOR_WHITE)
+}
+
+func perftDivide(board []uint8, depth int, color uint8) []PerftDivideResult {
+	var moves = Generate(board, color)
+	var result PerftResult
+	var divides []PerftDivideResult
+
+	if color == COLOR_WHITE {
+		color = COLOR_BLACK
+	} else {
+		color = COLOR_WHITE
+	}
+
+	for _, move := range moves {
+		// divide
+		var divide PerftDivideResult
+
+		// stats
+		result = stats(moves)
+
+		// make move
+		Add(board, move)
+
+		// next level
+		result = perft(board, depth-1, color)
+
+		// stats
+		divide = PerftDivideResult{Move: move, Nodes: result.Nodes}
+		divides = append(divides, divide)
+
+		// undo move
+		Remove(board, move)
+	}
+
+	return divides
+}
+
+func PerftDivide(depth int) []PerftDivideResult {
+	return perftDivide(Start, depth, COLOR_WHITE)
 }

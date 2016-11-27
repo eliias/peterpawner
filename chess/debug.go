@@ -143,3 +143,13 @@ func DebugPerft(depth int) string {
 	str += "  Captures: " + strconv.Itoa(result.Captures) + "\n"
 	return str
 }
+
+func DebugPerftDivide(depth int) string {
+	var results []PerftDivideResult = PerftDivide(depth)
+	var str = ""
+	str += "Perft Divide(" + strconv.Itoa(depth) + "):\n"
+	for _,result := range results {
+		str += DebugMove(result.Move) + " : " + strconv.FormatInt(int64(result.Nodes), 10) + "\n"
+	}
+	return str
+}
