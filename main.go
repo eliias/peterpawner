@@ -15,9 +15,10 @@ func main() {
 
 	var depth = 3
 	fmt.Println(chess.DebugPerft(depth))
+	//fmt.Println(chess.DebugPerftDivide(depth))
 
-	var game = chess.Load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-	fmt.Println(chess.Save(game))
+	//var game = chess.Start
+	//fmt.Println(chess.Save(game))
 	//fmt.Println(chess.DebugGame(game))
-	//fmt.Println(debug.Moves(board, depth, chess.COLOR_WHITE))
+	//fmt.Println(chess.DebugMoves(game.Board, 1, chess.COLOR_WHITE))
 }
