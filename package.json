@@ -9,8 +9,9 @@
   "scripts": {
     "build": "go build -o .tmp/peterpawner main.go",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "format": "go fmt ./chess && go fmt ./test && go fmt main.go",
     "start": "npm run build && .tmp/peterpawner",
-    "test": "go test"
+    "test": "npm run build && go test"
   },
   "repository": {
     "type": "git",

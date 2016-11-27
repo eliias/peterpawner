@@ -29,39 +29,51 @@ const B_KNIGHT uint8 = KNIGHT | COLOR_BLACK
 const B_PAWN uint8 = PAWN | COLOR_BLACK
 
 func PieceCode(piece string) uint8 {
-  switch piece {
-  // white
-  case "K": return W_KING
-  case "Q": return W_QUEEN
-  case "R": return W_ROOK
-  case "B": return W_BISHOP
-  case "N": return W_KNIGHT
-  case "P": return W_PAWN
-  // black
-  case "k": return B_KING
-  case "q": return B_QUEEN
-  case "r": return B_ROOK
-  case "b": return B_BISHOP
-  case "n": return B_KNIGHT
-  case "p": return B_PAWN
-  }
-  return EMPTY
+	switch piece {
+	// white
+	case "K":
+		return W_KING
+	case "Q":
+		return W_QUEEN
+	case "R":
+		return W_ROOK
+	case "B":
+		return W_BISHOP
+	case "N":
+		return W_KNIGHT
+	case "P":
+		return W_PAWN
+	// black
+	case "k":
+		return B_KING
+	case "q":
+		return B_QUEEN
+	case "r":
+		return B_ROOK
+	case "b":
+		return B_BISHOP
+	case "n":
+		return B_KNIGHT
+	case "p":
+		return B_PAWN
+	}
+	return EMPTY
 }
 
 func PosCode(pos string) uint8 {
-  var parts = strings.Split(pos, "")
-  var file = parts[0]
-  var rank = parts[1]
-  var r = strings.Index(Rank, rank)
-  var f = strings.Index(File, file)
-  var i = idx(uint8(7 - r), uint8(f))
-  return i
+	var parts = strings.Split(pos, "")
+	var file = parts[0]
+	var rank = parts[1]
+	var r = strings.Index(Rank, rank)
+	var f = strings.Index(File, file)
+	var i = idx(uint8(7-r), uint8(f))
+	return i
 }
 
 func ColorCode(color string) uint8 {
-  if color == "w" {
-    return COLOR_WHITE
-  } else {
-    return COLOR_BLACK
-  }
+	if color == "w" {
+		return COLOR_WHITE
+	} else {
+		return COLOR_BLACK
+	}
 }
