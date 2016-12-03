@@ -201,7 +201,7 @@ type PerftResult struct {
 }
 
 type PerftDivideResult struct {
-	Move Move
+	Move  Move
 	Nodes int
 }
 
@@ -218,8 +218,9 @@ func stats(moves []Move) PerftResult {
 func perft(board []uint8, depth int, color uint8) PerftResult {
 	var nodes int = 0
 	var captures int = 0
+	var result PerftResult
 	var moves = Generate(board, color)
-	var result PerftResult = stats(moves)
+	result = stats(moves)
 
 	if color == COLOR_WHITE {
 		color = COLOR_BLACK
