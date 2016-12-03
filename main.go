@@ -2,27 +2,31 @@ package main
 
 import (
 	"fmt"
+	"github.com/urfave/cli"
+	"os"
+	"strconv"
 	"github.com/eliias/peterpawner/chess"
-	"time"
 )
 
 func main() {
-	fmt.Println("\n-----------------\npeterpawner 1.0\nHannes Moser 2016\n-----------------\n")
+	app := cli.NewApp()
+	app.Name = "peterpawner"
+	app.Usage = "A basic and very raw chess engine, written in GO."
+	app.Version = "1.0.0"
 
-	var board []uint8
+	app.Commands = []cli.Command{
+		{
+			Name: "perft",
+			Aliases: []string{"p"},
+			Usage: "Run perft",
+			Action: func(c *cli.Context) error {
+				if depth, err := strconv.Atoi(c.Args().First()); err == nil {
+					fmt.Printf(chess.DebugPerft(depth))
+				}
+				return nil
+			},
+		},
+	}
 
-	board = chess.Start
-	fmt.Println(chess.DebugBoard(board))
-
-	var now = time.Now()
-	var depth = 5
-	fmt.Println(chess.DebugPerft(depth))
-	var delta = time.Now().Sub(now)
-	fmt.Println("Time: ", delta.Nanoseconds()/1000000)
-	//fmt.Println(chess.DebugPerftDivide(depth))
-
-	//var game = chess.Start
-	//fmt.Println(chess.Save(game))
-	//fmt.Println(chess.DebugGame(game))
-	//fmt.Println(chess.DebugMoves(game.Board, 1, chess.COLOR_WHITE))
+	app.Run(os.Args)
 }
