@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/eliias/peterpawner/chess"
+	"time"
 )
 
 func main() {
@@ -13,8 +14,11 @@ func main() {
 	board = chess.Start
 	fmt.Println(chess.DebugBoard(board))
 
-	var depth = 3
+	var now = time.Now()
+	var depth = 5
 	fmt.Println(chess.DebugPerft(depth))
+	var delta = time.Now().Sub(now)
+	fmt.Println("Time: ", delta.Nanoseconds()/1000000)
 	//fmt.Println(chess.DebugPerftDivide(depth))
 
 	//var game = chess.Start
