@@ -441,70 +441,92 @@ func king(board []uint8, piece uint8, enemy uint8, row uint8, col uint8) []Move 
 	var to uint8
 
 	// top, -1,0
-	move = field(board, row - 1, col)
-	to = idx(row - 1, col)
+	move = field(board, row-1, col)
+	to = idx(row-1, col)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	// top/right, -1,+1
-	move = field(board, row - 1, col + 1)
-	to = idx(row - 1, col + 1)
+	move = field(board, row-1, col+1)
+	to = idx(row-1, col+1)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	// right, 0,+1
-	move = field(board, row, col + 1)
-	to = idx(row, col + 1)
+	move = field(board, row, col+1)
+	to = idx(row, col+1)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	// bottom/right, +1,+1
-	move = field(board, row + 1, col + 1)
-	to = idx(row + 1, col + 1)
+	move = field(board, row+1, col+1)
+	to = idx(row+1, col+1)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	// bottom, +1,0
-	move = field(board, row + 1, col)
-	to = idx(row + 1, col)
+	move = field(board, row+1, col)
+	to = idx(row+1, col)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	// bottom/left, +1,-1
-	move = field(board, row + 1, col - 1)
-	to = idx(row + 1, col - 1)
+	move = field(board, row+1, col-1)
+	to = idx(row+1, col-1)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	// left, 0,-1
-	move = field(board, row, col - 1)
-	to = idx(row, col - 1)
+	move = field(board, row, col-1)
+	to = idx(row, col-1)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	// top/left, -1,-1
-	move = field(board, row - 1, col - 1)
-	to = idx(row - 1, col - 1)
+	move = field(board, row-1, col-1)
+	to = idx(row-1, col-1)
 	capture = move&enemy == enemy
 	if to != INVALID_MOVE && (move == EMPTY || capture) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 
 	return moves
+}
+
+// get all attacked fields (including pawns)
+var pawn_w = []int8{-9, -7}
+var pawn_b = []int8{9, 7}
+var knights = []int8{
+	-17, -10, -6, -15,
+	17, 10, 6, 15}
+var diagonals = []int8{
+	-9, -18, -27, -36, -45, -54, -63,
+	-7, -14, -21, -28, -35, -42, -49,
+	9, 18, 27, 36, 45, 54, 63,
+	7, 14, 21, 28, 35, 42, 49}
+var lines = []int8{
+	-8, -16, -24, -32, -40, -48, -56,
+	+8, +16, +24, +32, +40, +48, +56,
+	+1, +2, +3, +4, +5, +6, +7,
+	-1, -2, -3, -4, -5, -6, -7}
+
+func attacked(board []uint8, color uint8) []int8 {
+	var list []int8
+	return list
 }
 
 func Generate(board []uint8, color uint8) []Move {
