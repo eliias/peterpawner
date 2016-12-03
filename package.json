@@ -10,6 +10,7 @@
     "build": "go build -o .tmp/peterpawner main.go",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "format": "go fmt ./chess && go fmt ./test && go fmt main.go",
+    "perft": "npm run build && .tmp/peterpawner perft 4",
     "start": "npm run build && .tmp/peterpawner",
     "test": "npm run build && go test"
   },
