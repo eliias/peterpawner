@@ -127,10 +127,10 @@ func DebugMove(move Move) string {
 	return PieceName(move.Piece) + DebugPos(move.To)
 }
 
-func DebugHash(board []uint8) uint8 {
-	var h uint8 = 0
+func DebugHash(board []uint8) int {
+	var h int = 0
 	for _, v := range board {
-		h += v
+		h += int(v)
 	}
 	return h
 }
@@ -148,7 +148,7 @@ func DebugPerftDivide(depth int) string {
 	var results []PerftDivideResult = PerftDivide(depth)
 	var str = ""
 	str += "Perft Divide(" + strconv.Itoa(depth) + "):\n"
-	for _,result := range results {
+	for _, result := range results {
 		str += DebugMove(result.Move) + " : " + strconv.FormatInt(int64(result.Nodes), 10) + "\n"
 	}
 	return str
