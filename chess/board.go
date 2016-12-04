@@ -37,13 +37,13 @@ type Game struct {
 	Fullmove             int
 }
 
-func Add(board []uint8, move Move) []uint8 {
+func MakeMove(board []uint8, move Move) []uint8 {
 	board[move.From] = EMPTY
 	board[move.To] = move.Piece
 	return board
 }
 
-func Remove(board []uint8, move Move) []uint8 {
+func UndoMove(board []uint8, move Move) []uint8 {
 	board[move.To] = move.Prev
 	board[move.From] = move.Piece
 	return board
@@ -237,7 +237,7 @@ func perft(board []uint8, depth int, color uint8) PerftResult {
 		result = stats(moves)
 
 		// make move
-		Add(board, move)
+		MakeMove(board, move)
 
 		// next level
 		result = perft(board, depth-1, color)
@@ -247,7 +247,7 @@ func perft(board []uint8, depth int, color uint8) PerftResult {
 		captures += result.Captures
 
 		// undo move
-		Remove(board, move)
+		UndoMove(board, move)
 	}
 
 	return PerftResult{Nodes: nodes, Captures: captures}
@@ -276,7 +276,7 @@ func perftDivide(board []uint8, depth int, color uint8) []PerftDivideResult {
 		result = stats(moves)
 
 		// make move
-		Add(board, move)
+		MakeMove(board, move)
 
 		// next level
 		result = perft(board, depth-1, color)
@@ -286,7 +286,7 @@ func perftDivide(board []uint8, depth int, color uint8) []PerftDivideResult {
 		divides = append(divides, divide)
 
 		// undo move
-		Remove(board, move)
+		UndoMove(board, move)
 	}
 
 	return divides
