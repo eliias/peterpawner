@@ -46,16 +46,31 @@ func ColorName(color uint8) string {
 	return "b"
 }
 
+func DebugAttacks(list []uint8) string {
+	var str = ""
+	for i := 0; i < 64; i += 1 {
+		if i % 8 == 0 && i > 0 {
+			str += "\n"
+		}
+		if Contains(list, uint8(i)) {
+			str += "1"
+		} else {
+			str += "0"
+		}
+	}
+	return str
+}
+
 func DebugBoard(board []uint8) string {
 	var str = ""
 	var col int
 	var row int = 0
 	for i := 0; i < 100; i += 1 {
-		if i%10 == 0 && i > 0 {
+		if i % 10 == 0 && i > 0 {
 			row += 1
 			str += "\n"
 		}
-		col = i - row*10
+		col = i - row * 10
 
 		if col == 0 && row == 0 || col == 9 && row == 0 || col == 0 && row == 9 || col == 9 && row == 9 {
 			str += "+"
@@ -66,7 +81,7 @@ func DebugBoard(board []uint8) string {
 		} else if col == 0 || col == 9 {
 			str += "|"
 		} else {
-			str += PieceName(board[col+8*(row-1)-1])
+			str += PieceName(board[col + 8 * (row - 1) - 1])
 		}
 	}
 
@@ -98,14 +113,14 @@ func DebugMoves(board []uint8, depth int, color uint8) string {
 
 	var str = ""
 	for _, move := range list {
-		board = Add(board, move)
+		board = MakeMove(board, move)
 		str += DebugBoard(board) + "\n"
 		str += DebugMove(move) + "\n"
 		// again?
 		if depth > 1 {
-			str += DebugMoves(board, depth-1, color)
+			str += DebugMoves(board, depth - 1, color)
 		}
-		board = Remove(board, move)
+		board = UndoMove(board, move)
 	}
 
 	return str
@@ -116,8 +131,8 @@ func DebugPos(i uint8) string {
 		return "-"
 	}
 	var row = i / 8
-	var col = i - row*8
-	return string(File[col]) + string(Rank[7-row])
+	var col = i - row * 8
+	return string(File[col]) + string(Rank[7 - row])
 }
 
 func DebugMove(move Move) string {
@@ -146,10 +161,13 @@ func DebugPerft(depth int) string {
 
 func DebugPerftDivide(depth int) string {
 	var results []PerftDivideResult = PerftDivide(depth)
+	var total int = 0
 	var str = ""
 	str += "Perft Divide(" + strconv.Itoa(depth) + "):\n"
 	for _, result := range results {
+		total += result.Nodes
 		str += DebugMove(result.Move) + " : " + strconv.FormatInt(int64(result.Nodes), 10) + "\n"
 	}
+	str += "Total: " + strconv.FormatInt(int64(total), 10) + "\n"
 	return str
 }
