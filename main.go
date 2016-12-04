@@ -19,6 +19,23 @@ func main() {
 			Usage: "Run perft",
 			Action: chess.CmdPerft,
 		},
+		{
+			Name: "perft-divide",
+			Aliases: []string{"d"},
+			Usage: "Run perft divide",
+			Action: chess.CmdPerftDivide,
+		},
+		{
+			Name: "pieces",
+			Usage: "Piece codes",
+			Action: chess.CmdPieces,
+		},
+		{
+			Name: "experimental",
+			Aliases: []string{"e"},
+			Usage: "Experimental",
+			Action: chess.CmdExperiment,
+		},
 	}
 
 	app.Run(os.Args)

@@ -17,3 +17,26 @@ func CmdPerft(c *cli.Context) error {
 	}
 	return nil
 }
+
+func CmdPerftDivide(c *cli.Context) error {
+	if depth, err := strconv.Atoi(c.Args().First()); err == nil {
+		result := DebugPerftDivide(depth)
+		fmt.Println(result)
+	}
+	return nil
+}
+
+func CmdPieces(c *cli.Context) error {
+	fmt.Println("King", KING)
+	fmt.Println("Queen", QUEEN)
+	fmt.Println("Rook", ROOK)
+	fmt.Println("Bishop", BISHOP)
+	fmt.Println("Knight", KNIGHT)
+	fmt.Println("Pawn", PAWN)
+	return nil
+}
+
+func CmdExperiment(c *cli.Context) error {
+	fmt.Println("Combined", KING | QUEEN | BISHOP)
+	return nil
+}
