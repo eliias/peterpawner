@@ -49,7 +49,7 @@ func ColorName(color uint8) string {
 func DebugAttacks(list []uint8) string {
 	var str = ""
 	for i := 0; i < 64; i += 1 {
-		if i % 8 == 0 && i > 0 {
+		if i%8 == 0 && i > 0 {
 			str += "\n"
 		}
 		if Contains(list, uint8(i)) {
@@ -66,11 +66,11 @@ func DebugBoard(board []uint8) string {
 	var col int
 	var row int = 0
 	for i := 0; i < 100; i += 1 {
-		if i % 10 == 0 && i > 0 {
+		if i%10 == 0 && i > 0 {
 			row += 1
 			str += "\n"
 		}
-		col = i - row * 10
+		col = i - row*10
 
 		if col == 0 && row == 0 || col == 9 && row == 0 || col == 0 && row == 9 || col == 9 && row == 9 {
 			str += "+"
@@ -81,7 +81,7 @@ func DebugBoard(board []uint8) string {
 		} else if col == 0 || col == 9 {
 			str += "|"
 		} else {
-			str += PieceName(board[col + 8 * (row - 1) - 1])
+			str += PieceName(board[col+8*(row-1)-1])
 		}
 	}
 
@@ -118,7 +118,7 @@ func DebugMoves(board []uint8, depth int, color uint8) string {
 		str += DebugMove(move) + "\n"
 		// again?
 		if depth > 1 {
-			str += DebugMoves(board, depth - 1, color)
+			str += DebugMoves(board, depth-1, color)
 		}
 		board = UndoMove(board, move)
 	}
@@ -131,8 +131,8 @@ func DebugPos(i uint8) string {
 		return "-"
 	}
 	var row = i / 8
-	var col = i - row * 8
-	return string(File[col]) + string(Rank[7 - row])
+	var col = i - row*8
+	return string(File[col]) + string(Rank[7-row])
 }
 
 func DebugMove(move Move) string {

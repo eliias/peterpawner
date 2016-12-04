@@ -1,10 +1,10 @@
 package chess
 
 import (
+	"fmt"
 	"github.com/urfave/cli"
 	"strconv"
 	"time"
-	"fmt"
 )
 
 func CmdPerft(c *cli.Context) error {
@@ -37,6 +37,6 @@ func CmdPieces(c *cli.Context) error {
 }
 
 func CmdExperiment(c *cli.Context) error {
-	fmt.Println("Combined", KING | QUEEN | BISHOP)
+	fmt.Println("Combined", KING|QUEEN|BISHOP)
 	return nil
 }

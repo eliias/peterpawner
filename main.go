@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/eliias/peterpawner/chess"
 	"github.com/urfave/cli"
 	"os"
-	"github.com/eliias/peterpawner/chess"
 )
 
 func main() {
@@ -14,27 +14,27 @@ func main() {
 
 	app.Commands = []cli.Command{
 		{
-			Name: "perft",
+			Name:    "perft",
 			Aliases: []string{"p"},
-			Usage: "Run perft",
-			Action: chess.CmdPerft,
+			Usage:   "Run perft",
+			Action:  chess.CmdPerft,
 		},
 		{
-			Name: "perft-divide",
+			Name:    "perft-divide",
 			Aliases: []string{"d"},
-			Usage: "Run perft divide",
-			Action: chess.CmdPerftDivide,
+			Usage:   "Run perft divide",
+			Action:  chess.CmdPerftDivide,
 		},
 		{
-			Name: "pieces",
-			Usage: "Piece codes",
+			Name:   "pieces",
+			Usage:  "Piece codes",
 			Action: chess.CmdPieces,
 		},
 		{
-			Name: "experimental",
+			Name:    "experimental",
 			Aliases: []string{"e"},
-			Usage: "Experimental",
-			Action: chess.CmdExperiment,
+			Usage:   "Experimental",
+			Action:  chess.CmdExperiment,
 		},
 	}
 
