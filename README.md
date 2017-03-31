@@ -10,6 +10,7 @@ You need [glide](http://glide.sh/) for dependencies.
 
 ```bash
 glide install
+go get
 ```
 
 ## Build
