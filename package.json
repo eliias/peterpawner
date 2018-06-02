@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/eliias/peterpawner#readme",
   "devDependencies": {
-    "conventional-changelog-cli": "^1.2.0"
+    "conventional-changelog-cli": "^2.0.0"
   }
 }
