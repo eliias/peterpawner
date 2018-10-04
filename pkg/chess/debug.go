@@ -102,8 +102,8 @@ func DebugGame(game Game) string {
 	return str
 }
 
-func DebugMoves(board []uint8, depth int, color uint8) string {
-	var list = Generate(board, color)
+func DebugMoves(board []uint8, depth int, color uint8, enpassant []uint8) string {
+	var list = Generate(board, color, enpassant)
 
 	if color == COLOR_WHITE {
 		color = COLOR_BLACK
@@ -118,7 +118,7 @@ func DebugMoves(board []uint8, depth int, color uint8) string {
 		str += DebugMove(move) + "\n"
 		// again?
 		if depth > 1 {
-			str += DebugMoves(board, depth-1, color)
+			str += DebugMoves(board, depth-1, color, enpassant)
 		}
 		board = UndoMove(board, move)
 	}

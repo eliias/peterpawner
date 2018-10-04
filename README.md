@@ -4,14 +4,6 @@
 
 > A basic and very raw chess engine, written in GO.
 
-## Setup
-
-You need [glide](http://glide.sh/) for dependencies.
-
-```bash
-glide install
-```
-
 ## Build
 
 ```bash

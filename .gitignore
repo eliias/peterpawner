@@ -8,8 +8,7 @@
 node_modules/
 
 # Build
-.tmp/
+build/
 
 # Vendor
 vendor/
-

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/eliias/peterpawner/chess"
+	"github.com/eliias/peterpawner/pkg/chess"
 	"github.com/urfave/cli"
 	"os"
 )

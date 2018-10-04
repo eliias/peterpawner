@@ -3,10 +3,11 @@ package chess
 const INVALID_MOVE uint8 = 255
 
 type Move struct {
-	Piece uint8
-	Prev  uint8
-	From  uint8
-	To    uint8
+	Piece     uint8
+	Prev      uint8
+	From      uint8
+	To        uint8
+	EnPassant uint8
 }
 
 func pos(i uint8) (row uint8, col uint8) {
@@ -36,13 +37,14 @@ func field(board []uint8, row uint8, col uint8) uint8 {
 	return board[i]
 }
 
-func pawnAttacks(board []uint8, color uint8, enemy uint8, row uint8, col uint8) []uint8 {
+func pawnAttacks(board []uint8, color uint8, enemy uint8, row uint8, col uint8, enPassantFields []uint8) []uint8 {
 	var fields []uint8
 	var move uint8
 	var trow uint8
 	var to uint8
 	var capture bool
 	var empty bool
+	var isEnPassantTarget bool
 
 	// attack left/up if enemy piece is there
 	if color == COLOR_BLACK {
@@ -53,28 +55,33 @@ func pawnAttacks(board []uint8, color uint8, enemy uint8, row uint8, col uint8) 
 	move = field(board, trow, col-1)
 	capture = move&enemy == enemy
 	empty = move == EMPTY
-	if move != INVALID_MOVE && (capture || empty) {
-		to = idx(trow, col-1)
+	to = idx(trow, col-1)
+	isEnPassantTarget = Contains(enPassantFields, to)
+	if move != INVALID_MOVE && (capture || empty || isEnPassantTarget) {
 		fields = append(fields, to)
 	}
 	// attack right/up if enemy piece is there
 	move = field(board, trow, col+1)
 	capture = move&enemy == enemy
 	empty = move == EMPTY
-	if move != INVALID_MOVE && (capture || empty) {
-		to = idx(trow, col+1)
+	to = idx(trow, col+1)
+	isEnPassantTarget = Contains(enPassantFields, to)
+	if move != INVALID_MOVE && (capture || empty || isEnPassantTarget) {
 		fields = append(fields, to)
 	}
 	return fields
 }
 
-func pawn(board []uint8, piece uint8, color uint8, enemy uint8, row uint8, col uint8) []Move {
+func pawn(board []uint8, piece uint8, color uint8, enemy uint8, row uint8, col uint8, enPassantFields []uint8) []Move {
 	var moves []Move
 	var capture = false
 	var move uint8
 	var from uint8 = idx(row, col)
 	var to uint8
 	var trow uint8
+	var enPassantRow uint8
+	var enPassant uint8
+	var isEnPassantTarget bool
 	// move one up, target must be empty
 	if color == COLOR_BLACK {
 		trow = row + 1
@@ -86,20 +93,24 @@ func pawn(board []uint8, piece uint8, color uint8, enemy uint8, row uint8, col u
 		to = idx(trow, col)
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
-	// move two up, if in starting position, next two fields are clear
+	// move two up, if in starting position & next two fields are clear
+	// also save En passant square
 	if move == EMPTY && (color == COLOR_WHITE && row == 6 || color == COLOR_BLACK && row == 1) {
 		if color == COLOR_BLACK {
 			trow = row + 2
+			enPassantRow = row + 1
 		} else {
 			trow = row - 2
+			enPassantRow = row - 1
 		}
 		move = field(board, trow, col)
 		if move == EMPTY {
 			to = idx(trow, col)
-			moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
+			enPassant = idx(enPassantRow, col)
+			moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to, EnPassant: enPassant})
 		}
 	}
-	// attack left/up if enemy piece is there
+	// attack left/up if enemy piece is there or enpassant square
 	if color == COLOR_BLACK {
 		trow = row + 1
 	} else {
@@ -107,15 +118,17 @@ func pawn(board []uint8, piece uint8, color uint8, enemy uint8, row uint8, col u
 	}
 	move = field(board, trow, col-1)
 	capture = move&enemy == enemy
-	if move != INVALID_MOVE && capture {
-		to = idx(trow, col-1)
+	to = idx(trow, col-1)
+	isEnPassantTarget = Contains(enPassantFields, to)
+	if move != INVALID_MOVE && (capture || isEnPassantTarget) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
-	// attack right/up if enemy piece is there
+	// attack right/up if enemy piece is there or enpassant square
 	move = field(board, trow, col+1)
 	capture = move&enemy == enemy
-	if move != INVALID_MOVE && capture {
-		to = idx(trow, col+1)
+	to = idx(trow, col+1)
+	isEnPassantTarget = Contains(enPassantFields, to)
+	if move != INVALID_MOVE && (capture || isEnPassantTarget) {
 		moves = append(moves, Move{Piece: piece, Prev: board[to], From: from, To: to})
 	}
 	return moves
@@ -970,7 +983,7 @@ func king(board []uint8, attacked []uint8, piece uint8, enemy uint8, row uint8, 
 	return moves
 }
 
-func Attacks(board []uint8, color uint8) []uint8 {
+func Attacks(board []uint8, color uint8, enPassant []uint8) []uint8 {
 	var fields []uint8
 	var col uint8
 	var row uint8
@@ -1001,7 +1014,7 @@ func Attacks(board []uint8, color uint8) []uint8 {
 		/// PAWN ///
 		////////////
 		if piece == PAWN|color {
-			moves = pawnAttacks(board, color, enemy, row, col)
+			moves = pawnAttacks(board, color, enemy, row, col, enPassant)
 			fields = append(fields, moves...)
 			continue
 		}
@@ -1059,14 +1072,14 @@ func isAttacked(attacked []uint8, row uint8, col uint8) bool {
 	return Contains(attacked, i)
 }
 
-func filterKingAttacks(board []uint8, moves []Move, enemy uint8, king uint8) []Move {
+func filterByPiece(board []uint8, moves []Move, enemy uint8, piece uint8, enPassant []uint8) []Move {
 	var list []Move
 	var attacked []uint8
-	var row, col uint8 = pos(king)
+	var row, col uint8 = pos(piece)
 
 	for _, move := range moves {
 		board = MakeMove(board, move)
-		attacked = Attacks(board, enemy)
+		attacked = Attacks(board, enemy, enPassant)
 		if !isAttacked(attacked, row, col) {
 			list = append(list, move)
 		}
@@ -1075,7 +1088,7 @@ func filterKingAttacks(board []uint8, moves []Move, enemy uint8, king uint8) []M
 	return list
 }
 
-func Generate(board []uint8, color uint8) []Move {
+func Generate(board []uint8, color uint8, enPassant []uint8) []Move {
 	var moves []Move
 	var col uint8
 	var row uint8
@@ -1089,7 +1102,7 @@ func Generate(board []uint8, color uint8) []Move {
 		enemy = COLOR_WHITE
 	}
 
-	var attacked = Attacks(board, enemy)
+	var attacked = Attacks(board, enemy, enPassant)
 	var kingPos uint8
 
 	for i = 0; i < 64; i += 1 {
@@ -1120,7 +1133,7 @@ func Generate(board []uint8, color uint8) []Move {
 		/// PAWN ///
 		////////////
 		if piece == PAWN|color {
-			moves = append(moves, pawn(board, piece, color, enemy, row, col)...)
+			moves = append(moves, pawn(board, piece, color, enemy, row, col, enPassant)...)
 			continue
 		}
 
@@ -1167,7 +1180,7 @@ func Generate(board []uint8, color uint8) []Move {
 	}
 
 	// remove moves for pieces that are pinned (king would be in check)
-	moves = filterKingAttacks(board, moves, enemy, kingPos)
+	moves = filterByPiece(board, moves, enemy, kingPos, enPassant)
 
 	return moves
 }

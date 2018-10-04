@@ -215,11 +215,12 @@ func stats(moves []Move) PerftResult {
 	return result
 }
 
-func perft(board []uint8, depth int, color uint8) PerftResult {
+func perft(board []uint8, depth int, color uint8, enPassantFields []uint8) PerftResult {
 	var nodes int = 0
 	var captures int = 0
 	var result PerftResult
-	var moves = Generate(board, color)
+	var enPassant []uint8
+	var moves = Generate(board, color, enPassantFields)
 	result = stats(moves)
 
 	if color == COLOR_WHITE {
@@ -233,6 +234,12 @@ func perft(board []uint8, depth int, color uint8) PerftResult {
 	}
 
 	for _, move := range moves {
+		if move.EnPassant > 0 {
+			enPassant = append(enPassant, move.EnPassant)
+		}
+	}
+
+	for _, move := range moves {
 		// stats
 		result = stats(moves)
 
@@ -240,7 +247,7 @@ func perft(board []uint8, depth int, color uint8) PerftResult {
 		MakeMove(board, move)
 
 		// next level
-		result = perft(board, depth-1, color)
+		result = perft(board, depth-1, color, enPassant)
 
 		// stats
 		nodes += result.Nodes
@@ -254,18 +261,25 @@ func perft(board []uint8, depth int, color uint8) PerftResult {
 }
 
 func Perft(depth int) PerftResult {
-	return perft(Start, depth, COLOR_WHITE)
+	return perft(Start, depth, COLOR_WHITE, []uint8{})
 }
 
-func perftDivide(board []uint8, depth int, color uint8) []PerftDivideResult {
-	var moves = Generate(board, color)
+func perftDivide(board []uint8, depth int, color uint8, enPassantFields []uint8) []PerftDivideResult {
+	var moves = Generate(board, color, enPassantFields)
 	var result PerftResult
 	var divides []PerftDivideResult
+	var enPassant []uint8
 
 	if color == COLOR_WHITE {
 		color = COLOR_BLACK
 	} else {
 		color = COLOR_WHITE
+	}
+
+	for _, move := range moves {
+		if move.EnPassant > 0 {
+			enPassant = append(enPassant, move.EnPassant)
+		}
 	}
 
 	for _, move := range moves {
@@ -279,7 +293,7 @@ func perftDivide(board []uint8, depth int, color uint8) []PerftDivideResult {
 		MakeMove(board, move)
 
 		// next level
-		result = perft(board, depth-1, color)
+		result = perft(board, depth-1, color, enPassant)
 
 		// stats
 		divide = PerftDivideResult{Move: move, Nodes: result.Nodes}
@@ -293,5 +307,5 @@ func perftDivide(board []uint8, depth int, color uint8) []PerftDivideResult {
 }
 
 func PerftDivide(depth int) []PerftDivideResult {
-	return perftDivide(Start, depth, COLOR_WHITE)
+	return perftDivide(Start, depth, COLOR_WHITE, []uint8{})
 }
