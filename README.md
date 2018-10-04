@@ -5,7 +5,7 @@
 ## Build
 
 ```bash
-npm run build
+./scripts/build
 ```
 
 ## Start
