@@ -135,7 +135,7 @@ func DebugPos(i uint8) string {
 	return string(File[col]) + string(Rank[7-row])
 }
 
-func DebugMove(move Move) string {
+func DebugMove(move *Move) string {
 	if move.Prev != EMPTY {
 		return PieceName(move.Piece) + "x" + PieceName(move.Prev) + DebugPos(move.To)
 	}

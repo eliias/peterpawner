@@ -37,13 +37,13 @@ type Game struct {
 	Fullmove             int
 }
 
-func MakeMove(board []uint8, move Move) []uint8 {
+func MakeMove(board []uint8, move *Move) []uint8 {
 	board[move.From] = EMPTY
 	board[move.To] = move.Piece
 	return board
 }
 
-func UndoMove(board []uint8, move Move) []uint8 {
+func UndoMove(board []uint8, move *Move) []uint8 {
 	board[move.To] = move.Prev
 	board[move.From] = move.Piece
 	return board
@@ -201,11 +201,11 @@ type PerftResult struct {
 }
 
 type PerftDivideResult struct {
-	Move  Move
+	Move  *Move
 	Nodes int
 }
 
-func stats(moves []Move) PerftResult {
+func stats(moves []*Move) PerftResult {
 	var result = PerftResult{Nodes: len(moves)}
 	for _, move := range moves {
 		if move.Prev != EMPTY {

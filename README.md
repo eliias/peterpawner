@@ -11,6 +11,5 @@ npm run build
 ## Start
 
 ```bash
-cd .tmp/
-./peterpawner help
+./scripts/start help
 ```
