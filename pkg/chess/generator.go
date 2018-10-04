@@ -76,7 +76,7 @@ func pawn(board []uint8, piece uint8, color uint8, enemy uint8, row uint8, col u
 	var moves []*Move
 	var capture = false
 	var move uint8
-	var from uint8 = idx(row, col)
+	var from = idx(row, col)
 	var to uint8
 	var trow uint8
 	var enPassantRow uint8

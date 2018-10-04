@@ -216,8 +216,8 @@ func stats(moves []*Move) PerftResult {
 }
 
 func perft(board []uint8, depth int, color uint8, enPassantFields []uint8) PerftResult {
-	var nodes int = 0
-	var captures int = 0
+	var nodes = 0
+	var captures = 0
 	var result PerftResult
 	var enPassant []uint8
 	var moves = Generate(board, color, enPassantFields)
