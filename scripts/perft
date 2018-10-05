@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-go run cmd/peterpawner/main.go perft 4
