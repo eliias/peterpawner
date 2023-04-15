@@ -1,9 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/eliias/peterpawner/pkg/chess"
 	"github.com/urfave/cli"
-	"os"
 )
 
 func main() {
